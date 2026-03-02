@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'support' => [
+            'driver' => 'session',
+            'provider' => 'support-agents',
+        ]
     ],
 
     /*
@@ -64,7 +68,10 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
+        'support-agents' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_SUPPORT_MODEL', App\Models\SupportAgent::class),
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

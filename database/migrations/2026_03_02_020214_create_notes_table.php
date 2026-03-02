@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('player_notes', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('support_agent_id')->constrained('support_agents');
-            $table->string('note', 400);
+            $table->foreignId('created_by')->constrained('support_agents')->onDelete('cascade');
+            $table->morphs('noteable');
+            $table->text('content');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('player_notes');
+        Schema::dropIfExists('notes');
     }
 };
