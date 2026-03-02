@@ -19,7 +19,7 @@
 
     $btnClassType = isset($type) ? $types[$type] : $types['primary'];
 
-    $btnClass = "$btnSize $btnClassType";
+    $btnClass = "cursor-pointer $btnSize $btnClassType";
 
 @endphp
 
@@ -34,7 +34,7 @@
 
     @if (isset($file))
         
-        <label {{ $attributes->merge(['class' => "cursor-pointer $btnClass"]) }}>
+        <label {{ $attributes->merge(['class' => "$btnClass"]) }}>
             {{ $slot }}
             <input type="file" name="{{ $name }}" {{ isset($wireModel) ? "wire:model=$wireModel" : '' }} class="hidden"
             {!! isset($onlyImages) ? 'accept="image/*"' : '' !!} >

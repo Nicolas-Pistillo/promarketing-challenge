@@ -23,8 +23,15 @@ Route::middleware('auth:support')->group(function()
 
     Route::prefix('/panel')->group(function() 
     {
-        Route::view('/', 'support.panel.index')->name('support.panel.index');
-        Route::view('/users', 'support.panel.users')->name('support.panel.users.index');
-        Route::view('/tickets', 'support.panel.tickets')->name('support.panel.tickets.index');
+        Route::view('/', 'support.panel.index')
+            ->name('support.panel.index');
+
+        Route::view('/users', 'support.panel.users.index')
+            ->middleware('can:view-users')
+            ->name('support.panel.users.index');
+
+        Route::view('/tickets', 'support.panel.tickets.index')
+            ->middleware('can:view-tickets')
+            ->name('support.panel.tickets.index');
     });
 }); 
