@@ -23,6 +23,8 @@
             {{ isset($model) ? "wire:model.blur=$model" : '' }}
             {{ isset($liveModel) ? "wire:model.live=$liveModel" : '' }}
             {{ isset($readonly) && $readonly ? 'readonly' : '' }}
+            {{ isset($name) ? "name=$name" : '' }}
+            value="{{ $value ?? '' }}"
             placeholder="{{ $placeholder ?? '' }}"
             class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 
             -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 

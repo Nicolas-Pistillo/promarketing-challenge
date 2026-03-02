@@ -1,4 +1,4 @@
-<x-app>
+<x-basic-layout>
     <div class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"
@@ -12,16 +12,21 @@
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" class="space-y-6">
+            <form action="{{ route('support.login') }}" method="POST" class="space-y-6">
+                @csrf
 
-                <x-form-input icon="mail" label="Email" />
+                <x-form-input name="email" type="email" icon="mail" label="Email" value="{{ old('email') }}" />
 
-                <x-form-input icon="lock" type="password" label="Contraseña" />
+                <x-form-input name="password" icon="lock" type="password" label="Contraseña" />
 
-                <x-button size="large" submit class="w-full cursor-pointer">
+                <x-button class="mb-3" size="large" submit class="w-full cursor-pointer">
                     Iniciar sesion
                 </x-button>
+
+                @error('login_failed')
+                    <small class="text-red-500">{{ $message }}</small>
+                @enderror
             </form>
         </div>
     </div>
-</x-app>
+</x-basic-layout>
