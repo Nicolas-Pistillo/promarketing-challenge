@@ -1,7 +1,7 @@
 <div
     x-data="toastComponent()"
     x-on:toast.window="show($event.detail)"
-    class="z-50 fixed inset-0 pointer-events-none flex flex-col items-end p-6"
+    class="z-50 fixed inset-0 pointer-events-none flex justify-end flex-col items-start p-6"
 >
     <template x-for="toast in toasts" :key="toast.id">
         <div

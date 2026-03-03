@@ -8,15 +8,13 @@ trait WithToast
         string $type = 'info',
         string $title = '',
         string $body = '',
-        int $time = 4000,
-        string $position = 'top-right'
+        int $time = 4000
     ): void {
         $this->dispatch('toast', 
             type: $type,
             title: $title,
             body: $body,
-            time: $time,
-            position: $position
+            time: $time
         );
     }
 }

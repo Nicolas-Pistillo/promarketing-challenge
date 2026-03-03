@@ -25,6 +25,7 @@ class RolePermissionSeeder extends Seeder
         $editUsers    = Permission::create(['name' => 'edit-users', 'guard_name' => 'support']);
         $deleteUsers  = Permission::create(['name' => 'delete-users', 'guard_name' => 'support']);
         $addUserNotes = Permission::create(['name' => 'add-user-notes', 'guard_name' => 'support']);
+        $viewUserNotes = Permission::create(['name' => 'view-user-notes', 'guard_name' => 'support']);
         $suspendUsers  = Permission::create(['name' => 'suspend-users', 'guard_name' => 'support']);
 
         $viewTickets    = Permission::create(['name' => 'view-tickets', 'guard_name' => 'support']);
@@ -32,16 +33,18 @@ class RolePermissionSeeder extends Seeder
         $closeTickets   = Permission::create(['name' => 'close-tickets', 'guard_name' => 'support']);
 
         // Assign permissions to roles
-        $viewer->givePermissionTo($viewUsers, $viewTickets);
+        $viewer->givePermissionTo($viewUsers, $viewUserNotes, $viewTickets);
 
         $operative->givePermissionTo([
             $viewUsers,
+            $viewUserNotes,
             $createUsers,
             $editUsers,
             $viewTickets,
             $replyTickets,
             $closeTickets,
             $addUserNotes,
+            $viewUserNotes,
             $deleteUsers,
             $suspendUsers
         ]);

@@ -20,7 +20,6 @@ new class extends Component {
     public string $noteBody = '';
 
     public bool $showAddNoteModal = false;
-    public bool $showDeleteModal = false;
     public bool $showNotesPanel = false;
 
     public function boot(UserService $service)
@@ -54,7 +53,9 @@ new class extends Component {
 
             $this->showAddNoteModal = false;
 
-            $this->reset('targetUser', 'noteBody');
+            $this->reset('noteBody');
+
+            $this->openNotesPanel($this->targetUser);
 
             $this->notify(
                 type: 'success',
@@ -66,6 +67,27 @@ new class extends Component {
             $this->notify(
                 type: 'danger',
                 title: 'Error al guardar la nota',
+                body: $th->getMessage()
+            );
+        }
+    }
+
+    public function toggleUserActive(User $user)
+    {
+        try {
+            $this->service->toggleUserActive($user->id);
+
+            $user->refresh();
+
+            $this->notify(
+                type: 'success',
+                title: 'Usuario actualizado',
+                body: "El usuario ahora está " . ($user->active ? "activo" : "suspendido")
+            );
+        } catch (\Throwable $th) {
+            $this->notify(
+                type: 'danger',
+                title: 'Error al actualizar el usuario',
                 body: $th->getMessage()
             );
         }
@@ -112,6 +134,13 @@ new class extends Component {
                                 text-gray-900">
                                     Email
                                 </th>
+                                @can('suspend-users')
+                                    <th scope="col"
+                                    class="py-3.5 pr-3 pl-4 text-left text-sm 
+                                    font-semibold text-gray-900 sm:pl-3">
+                                        Activo
+                                    </th>
+                                @endcan
                                 <th scope="col"
                                 class="px-3 py-3.5 text-left text-sm font-semibold 
                                 text-gray-900 flex items-center gap-1.5">
@@ -129,19 +158,32 @@ new class extends Component {
                                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                                         {{ $user->email }}
                                     </td>
+
+                                    @can('suspend-users')
+                                        <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                            <x-switch wireChange="toggleUserActive({{ $user->id }})" 
+                                            :checked="$user->active" />
+                                        </td>    
+                                    @endcan
+                                    
                                     <td class="py-4 pr-4 pl-3 text-left text-sm font-medium whitespace-nowrap sm:pr-3">
                                         <div class="flex items-center gap-2">
-                                            <x-icon code="note_add"
-                                            class="p-1.5 rounded-full bg-gray-100 cursor-pointer
-                                            text-gray-600 hover:bg-gray-200 hover:text-gray-900"
-                                            x-tooltip.raw="Añadir nota"
-                                            wire:click="openAddNoteModal({{ $user->id }})" />
 
-                                            <x-icon code="note_stack"
-                                            class="p-1.5 rounded-full bg-gray-100 cursor-pointer
-                                            text-gray-600 hover:bg-gray-200 hover:text-gray-900"
-                                            x-tooltip.raw="Ver notas"
-                                            wire:click="openNotesPanel({{ $user->id }})" />
+                                            @can('add-user-notes')
+                                                <x-icon code="note_add"
+                                                class="p-1.5 rounded-full bg-gray-100 cursor-pointer
+                                                text-gray-600 hover:bg-gray-200 hover:text-gray-900"
+                                                x-tooltip.raw="Añadir nota"
+                                                wire:click="openAddNoteModal({{ $user->id }})" />
+                                            @endcan
+
+                                            @can('view-user-notes')
+                                                <x-icon code="note_stack"
+                                                class="p-1.5 rounded-full bg-gray-100 cursor-pointer
+                                                text-gray-600 hover:bg-gray-200 hover:text-gray-900"
+                                                x-tooltip.raw="Ver notas"
+                                                wire:click="openNotesPanel({{ $user->id }})" />
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

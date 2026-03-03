@@ -23,6 +23,14 @@ class UserRepository implements UserRepositoryInterface
         return $query->paginate($perPage);
     }
 
+    public function addNote(int $userId, int $createdBy, string $content)
+    {
+        User::find($userId)->notes()->create([
+            'created_by' => $createdBy,
+            'content' => $content,
+        ]);
+    }
+
     public function find(int $id): User
     {
         return User::find($id);
@@ -33,12 +41,15 @@ class UserRepository implements UserRepositoryInterface
         throw new \Exception('Not implemented');
     }
 
-    public function update($id, array $data): User
+    public function update(int $id, array $data): User
     {
-        throw new \Exception('Not implemented');
+        $user = User::find($id);
+        $user->update($data);
+
+        return $user;
     }
 
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
         throw new \Exception('Not implemented');
     }
